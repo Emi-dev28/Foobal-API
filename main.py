@@ -37,3 +37,4 @@ subdic2 = dic_machine(subdic1)
 data_importante = subdic2[1]
 
 print(data_importante)
+#modificacion
