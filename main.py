@@ -2,38 +2,70 @@ from riotwatcher import LolWatcher, ApiError
 #Modificacion de archivo
 
 # golbal variables
-api_key = 'RGAPI-2fa26a0d-405c-415f-bce4-c665d5e5ba46'
+api_key = 'RGAPI-e8189c12-e43e-4edf-822f-cd050ad65e76'
 watcher = LolWatcher(api_key)
-region = 'na1'
+region = 'la2'
+jugador = watcher.summoner.by_name(region, 'ivanchoakd') #Inicializacion de jugador
 
 #func
-def sacar_strings(array, remove):
-    for i in range(len(array)):
-        array[i] = array[i].replace(remove, "")
-    return array 
+stats_match = lambda region, historial:watcher.match.by_id(region,historial[0]) #se puede utilizar tambien el metodo timeline_by_match
+#el 0 hace referencia a la ultima partida
 
-def sacar_diccionarios(d, sub_dicts=None):
-    if sub_dicts is None:
-        sub_dicts = []
-    for key, value in d.items():
-        if isinstance(value, dict):
-            sub_dicts.append(value)
-            sacar_diccionarios(value, sub_dicts)
-    return sub_dicts
+def historial(region, jugador):
+    """_summary_: Funcion que retorna una lista con las ultimas partidas jugadas
 
-def dic_machine(lista_de_diccionarios):
-    diccionario_resultante = {}
-    for i, diccionario in enumerate(lista_de_diccionarios):
-        diccionario_resultante[i] = diccionario
-    return diccionario_resultante
+    Args:
+        region (_type_): var que contiene la region del player
+        jugador (_type_): data del player almacenada en una var
 
-jugador = watcher.summoner.by_name(region, 'Doublelift')
-stats = watcher.league.by_summoner(region, jugador['id'])
-partidas = watcher.match.matchlist_by_puuid(region, jugador['puuid'])
-ultima_partida = partidas[0]
-detalle_partida = watcher.match.by_id(region, ultima_partida)
-subdic1 = sacar_diccionarios(detalle_partida)
-subdic2 = dic_machine(subdic1)
-data_importante = subdic2[1]
+    Returns:
+        _type_: lista con las partidas jugadas
+    """
+    puuid = jugador.get("puuid")
+    historial = watcher._match.matchlist_by_puuid(region, puuid)
+    return historial
+    
+def winrate(stats):
+    """_summary_: little funcion que calcula el winrate, tengo que testearla
 
-print(data_importante)
+    Args:
+        stats (_type_): estadisticas generales del jugador en ranked
+
+    Returns:
+        _type_: porcentaje de winrate en ranked
+    """
+    wins = stats.get("wins")
+    losses = stats.get("losses")
+    total = wins + losses
+    return (wins * 100) / total 
+    
+def maestry_champs(region, jugador):
+    """_summary_: Funcion que devuelve la maestria de los campeones de un player
+
+    Args:
+        region (_type_): var que contiene la region del player
+        jugador (_type_): data del player almacenada en una var
+
+    Returns:
+        _type_: retorna una lista de dict con la data de la maestria de todos los champs
+    """
+    id = jugador.get("id")
+    maestry = watcher.champion_mastery.by_summoner(region,id)
+    return maestry    
+
+def estadisticas_ranked(region, jugador):
+    """_summary_: retorna un dict con todas las estadisticas de ranked de un player
+
+    Args:
+        region (_type_): var que contiene la region del player
+        jugador (_type_): data del player almacenada en una var
+
+    Returns:
+        _type_: dict con la data
+    """
+    id = jugador.get("id")
+    stats = watcher.league.by_summoner(region, id)
+    return stats 
+    
+
+print(stats_match(region, historial(region,jugador)))
