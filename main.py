@@ -2,9 +2,9 @@ from riotwatcher import LolWatcher, ApiError
 #Modificacion de archivo
 
 # golbal variables
-api_key = 'RGAPI-2fa26a0d-405c-415f-bce4-c665d5e5ba46'
+api_key = 'RGAPI-e8189c12-e43e-4edf-822f-cd050ad65e76'
 watcher = LolWatcher(api_key)
-region = 'na1'
+region = 'la2'
 
 #func
 def sacar_strings(array, remove):
@@ -27,7 +27,7 @@ def dic_machine(lista_de_diccionarios):
         diccionario_resultante[i] = diccionario
     return diccionario_resultante
 
-jugador = watcher.summoner.by_name(region, 'Doublelift')
+jugador = watcher.summoner.by_name(region, 'Deathkiller71')
 stats = watcher.league.by_summoner(region, jugador['id'])
 partidas = watcher.match.matchlist_by_puuid(region, jugador['puuid'])
 ultima_partida = partidas[0]
