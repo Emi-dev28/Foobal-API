@@ -2,7 +2,7 @@ from riotwatcher import LolWatcher, ApiError
 #Modificacion de archivo
 
 # golbal variables
-api_key = 'RGAPI-e8189c12-e43e-4edf-822f-cd050ad65e76'
+api_key = 'RGAPI-ad036331-51ab-4a1d-84c0-e11ae4cdc278'
 watcher = LolWatcher(api_key)
 region = 'la2'
 jugador = watcher.summoner.by_name(region, 'ivanchoakd') #Inicializacion de jugador
@@ -68,4 +68,4 @@ def estadisticas_ranked(region, jugador):
     return stats 
     
 
-print(stats_match(region, historial(region,jugador)))
+#print(stats_match(region, historial(region,jugador)))
