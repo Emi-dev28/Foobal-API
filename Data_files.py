@@ -1,9 +1,17 @@
 from Lol_APP.main import *
+import mysql.connector
 
 #datos
 values = ["tier","rank","summonerName","leaguePoints","wins","losses"]
 
 a = estadisticas_ranked(region, jugador)
+
+#diccionario con queries para interactuar con la base de datos
+statements = {
+    "get_player_ranked_data": "SELECT * FROM Ranked_Data WHERE summoner_name LIKE %s",
+    "set_player_ranked_data": "INSERT INTO Ranked_Data (tier, rank, summoner_name, league_points, wins, losses) " 
+                              "VALUES (%(tier)s, %(rank)s, %(summonerName)s, %(leaguePoints)s, %(wins)s, %(losses)s)" #Tengo que parametrizar de esta forma horrenda porque los datos a guardar están en un dict
+    }
 
 def get_dict(lista):
     """
@@ -50,6 +58,68 @@ def buscar_valor(data_dict,values):
             dict[key] = data_dict[key]
     return dict
 
-diccionario = extract_dict(a)
-dict = buscar_valor(diccionario,values)
-print(diccionario)
+def connect_database():
+    """
+    Genera la conexión con la base de datos ya existente en localhost
+    """
+    global connection #python asume que una variable es local cuando asignamos, por lo que tengo que agregar esta declaración con keyword global para q se avive q es global
+    global db_cursor
+
+    try:
+        connection = mysql.connector.connect(
+            host= 'localhost',
+            port= 3306,
+            user= 'root',
+            passwd= '',
+            db= 'User_Data'
+        )
+        #NOTA: Averiguar como hacer para que todos puedan acceder a la base de datos de forma remota
+        if connection.is_connected():
+            db_cursor = connection.cursor()
+            print("Conexión exitosa")
+
+    except Exception as ex:
+        print(ex)
+        print(mysql.connector.Error)
+
+def add_new_player(region, nombre_jugador):
+    """
+    Añade un jugador a la base de datos. Antes revisa si ya fue guardado
+
+    Args:
+        region (string): Nombre de la región
+        jugador (string): Nombre del jugador
+
+    Returns:
+        bool: True si se pudo añadir el jugador a la base de datos, False de lo contrario
+    """
+
+    db_cursor.execute(statements["get_player_ranked_data"], (nombre_jugador, )) #execute solo acepta tipo de dato no mutable como segundo argumento, por eso (nombre_jugador, )
+    
+    if not db_cursor.fetchall():
+        jugador = watcher.summoner.by_name(region, nombre_jugador)
+        #No me gusta la mamushka de funciones, hay que ver de arreglar y organizar un toque
+        player_ranked_data = buscar_valor(extract_dict(estadisticas_ranked(region, jugador)), values)
+        db_cursor.execute(statements["set_player_ranked_data"], player_ranked_data)
+        connection.commit()
+        return True
+    else:
+        #Averiguar de obtener la razón del error en db_cursor para dar más detalle por qué no se pudo agregar a la base
+        print(f"Error: el jugador {nombre_jugador} no pudo añadirse a la base de datos")
+        return False
+
+if __name__ == "__main__":
+    print(a, "\n")
+    diccionario = extract_dict(a)
+    dict = buscar_valor(diccionario,values)
+    print(diccionario, "\n")
+    print(dict)
+
+    connection = mysql.connector.MySQLConnection() #creo objeto MySQLConnection como global porque múltiples funciones deben acceder al mismo
+    connect_database()
+    db_cursor = connection.cursor() #db_cursor es el cursor con el que vamos a ejecutar las queries de la db
+
+    print("ingrese nombre de region y jugador a añadir a la base de datos.\n")
+    region = input("region: ")
+    nombre_jugador = input("jugador: ")
+    add_new_player(region, nombre_jugador)
