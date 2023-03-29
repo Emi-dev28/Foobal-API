@@ -1,0 +1,99 @@
+/* Estilo general del formulario */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat&family=Playfair+Display:wght@500&display=swap');
+.body-container{
+    width:100%;
+    height: 100%;
+    background-color: #3F43CA;
+}
+form {
+    background-color: #1B1F3B;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:1rem;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    width: 400px;
+    height: 630px;
+  }
+  
+  /* Estilo del título */
+  h2 {
+    margin-bottom: 20px;
+    font-family: "Bebas Neue";
+    font-size: 2em;
+  }
+  .checkbox-label {
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+    margin-bottom: 10px; /* Puedes ajustar el valor según tus necesidades */
+  }
+  
+  .checkbox-input {
+    appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px; /* Puedes ajustar el valor según tus necesidades */
+  border: 2px solid #007bff;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  
+  .checkbox-input:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  .checkbox-input:checked::before {
+    content: '✔';
+    color: #fff;
+  }
+  
+  /* Estilo de las etiquetas */
+  label {
+    display: flex;
+    flex-direction: column;
+    font-family: "Montserrat", sans-serif;
+    margin-bottom: 10px;
+    color:#f2f2f2
+  }
+  
+  /* Estilo de los campos de entrada */
+  input[type="text"],
+  input[type="password"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+  }
+  
+  /* Estilo del botón enviar */
+  input[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Estilo de la casilla de verificación */
+  input[type="checkbox"] {
+    margin-top: 10px;
+  }
+  
+  /* Estilo del cuerpo de la página */
+  .body-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f2f2f2;
+  }
