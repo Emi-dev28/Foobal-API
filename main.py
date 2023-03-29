@@ -2,7 +2,7 @@ from riotwatcher import LolWatcher, ApiError
 
 
 # golbal variables
-api_key = 'RGAPI-2fa26a0d-405c-415f-bce4-c665d5e5ba46'
+api_key = 'RGAPI-2307060e-30a9-4907-9ba5-40d1e5e90808'
 watcher = LolWatcher(api_key)
 region = 'na1'
 
