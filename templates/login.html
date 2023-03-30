@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log in</title>
+    <link href="/static/styles_usuario.css" rel="stylesheet"/>
+</head>
+  <body class="body-container">
+    <form action="POST">
+      <h2>Inicia sesion</h2>
+      <label for="Usuario"
+        >Nombre de usuario
+        <input type="text" id="nombreUsuario" />
+      </label>
+      <label for="Contraseña">
+        Contraseña
+        <input type="text" id="contraseña">
+      </label>
+      <label class="checkbox-label" id="mantenerSesion"  for="mantenerSesion"> Desea mantener Iniciada la sesion?
+      <input class="checkbox-input"type="checkbox" id="mantenerSesion" name="mantenerSesion">
+    </label>
+    </form>
+  </body>
+</html>
